@@ -2,7 +2,6 @@ import Transaction from "../model/transaction.model.js";
 import Trip from "../model/trip.model.js";
 export const transaction = async(req, res) => {
   try {
-      console.log("function started");
         const {entry_by, amount, comment,tripcode,whopaid,split } = req.body;
         console.log(req.body);
         const createdtransaction = new Transaction({
@@ -14,7 +13,6 @@ export const transaction = async(req, res) => {
             split: split
         });
         await createdtransaction.save();
-        console.log("transaction created", createdtransaction);
 //its for updating trip values
 
         // Assuming tripcode, amount, and username are provided from your application
@@ -47,11 +45,9 @@ const updateTrip = async (tripcode, amount,whopaid,split) => {
 
   // Call the updateTrip function with appropriate parameters
   updateTrip(tripcode, amount, whopaid,split);
-//updation task ended
-console.log("ended successfully")
+
 
     } catch (error) {
-      console.log("fuck you")
         console.log("Error: " + error.message);
         res.status(500).json({ message: "Internal server error" });
     }
