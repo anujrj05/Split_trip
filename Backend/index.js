@@ -4,46 +4,44 @@ import dotenv from "dotenv";
 import cors from "cors";
 import userRoute from "./route/user.route.js";
 import createtripRoute from "./route/trip.route.js";
-import transactionroute from "./route/transaction.route.js";  
-
-const app = express();
-const corsOptions = {
-    origin: '*',
-    credential: true,
-    methods: ["GET", "POST", "OPTIONS"],
-}; 
-
-
-app.options('*', cors(corsOptions));
-app.use(cors(corsOptions));
-app.use(express.json());
+import transactionroute from "./route/transaction.route.js";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 4000;
-const URI = process.env.MongoDBURI;
+const app = express();
 
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  methods: ["GET", "POST", "OPTIONS"],
+};
 
-// connect to mongoDB
-try {
-    mongoose.connect(URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-    console.log("Connected to mongoDB");
-} catch (error) {
-    console.log("Error: ", error);
-}
+app.use(cors(corsOptions));
+app.use(express.json());
 
-// defining routes
+// MongoDB connection (safe for Vercel)
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) return;
+  await mongoose.connect(process.env.MongoDBURI);
+  isConnected = true;
+  console.log("MongoDB connected");
+};
+
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
+// routes
 app.get("/", (req, res) => {
-    res.send("Hello, this is the root!");
-});
-app.use("/user", cors(corsOptions), userRoute);
-app.use("/trip", cors(corsOptions), createtripRoute);
-app.use("/transaction", cors(corsOptions), transactionroute);
-
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+  res.send("Trip Split Backend is running 🚀");
 });
 
+app.use("/user", userRoute);
+app.use("/trip", createtripRoute);
+app.use("/transaction", transactionroute);
+
+// ❌ app.listen REMOVED
+export default app;
