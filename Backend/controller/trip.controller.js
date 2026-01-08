@@ -106,7 +106,6 @@ export const finaltrip = async(req, res) => {
        const {tripcode} = req.body;
        const tripp=await Trip.findOne({tripcode:tripcode});
        if (!tripp) {
-           console.log(tripcode);
         return res.status(404).json({ message: "Trip not found" });
       }
        console.log(tripp.tripcode);
@@ -130,7 +129,6 @@ export const finaltripp = async(req, res) => {
        if (!tripp) {
         return res.status(404).json({ message: "Trip not found" });
       }
-       console.log(tripp.tripcode);
        res.status(201).json({
         message: "Trip created successfully",
         trip: {
@@ -157,7 +155,6 @@ try {
       { tripcode: tripcode },
       { $pull: { usernames: username } }
   );
-  console.log('Username removed successfully');
 
   res.status(200).json({ message: 'Username removed successfully' });
 }

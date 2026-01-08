@@ -11,13 +11,13 @@ const sendverifymail=async(fullname,email,otp,retries=5)=>{
             secure: true,
             requireTLS:true,
             auth: {
-              user: "trip.06teams@gmail.com",
-              pass: "ooboznziujkbdiam",
+              user: "kuntalanuj6@gmail.com",
+              pass: "cbfdjltkplkxbpnm" //app password,
     }
         });
 
        const mailOptions = {
-    from: "trip.06teams@gmail.com",
+    from: "kuntalanuj6@gmail.com",
     to: email,
     subject: "TRiP: OTP for Verification",
     text: `

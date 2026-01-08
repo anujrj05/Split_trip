@@ -4,14 +4,14 @@ import dotenv from "dotenv";
 import cors from "cors";
 import userRoute from "./route/user.route.js";
 import createtripRoute from "./route/trip.route.js";
-import transactionroute from "./route/transaction.route.js";
+import transactionroute from "./route/transaction.route.js";  
 
 const app = express();
 const corsOptions = {
     origin: '*',
     credential: true,
     methods: ["GET", "POST", "OPTIONS"],
-};
+}; 
 
 
 app.options('*', cors(corsOptions));
