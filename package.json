@@ -1,0 +1,7 @@
+{
+  "name": "split-trip",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix Frontend run build"
+  }
+}
