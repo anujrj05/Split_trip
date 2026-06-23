@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
-const mongoUri = process.env.MongoDBURI || process.env.MONGODB_URI;
+const mongoUri =
+  process.env.MongoDBURI ||
+  process.env.MONGODB_URI ||
+  (process.env.NODE_ENV !== "production"
+    ? "mongodb://127.0.0.1:27017/TRiP"
+    : null);
 
 let cached = global.mongoose;
 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getApiErrorMessage } from "../utils/apiErrorMessage";
+import { PASSWORD_HINT, validatePassword } from "../utils/passwordValidation";
 
 function ForgotPassword() {
   const navigate = useNavigate();
@@ -12,10 +13,14 @@ function ForgotPassword() {
     otp: "",
     newPassword: "",
   });
+  const [passwordError, setPasswordError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "newPassword") {
+      setPasswordError("");
+    }
   };
 
   const requestOtp = async (e) => {
@@ -41,6 +46,13 @@ function ForgotPassword() {
     e.preventDefault();
     if (!formData.otp || !formData.newPassword) {
       toast.error("Please enter OTP and new password");
+      return;
+    }
+
+    const passwordCheck = validatePassword(formData.newPassword);
+    if (!passwordCheck.valid) {
+      setPasswordError(passwordCheck.message);
+      toast.error(passwordCheck.message);
       return;
     }
 
@@ -103,6 +115,10 @@ function ForgotPassword() {
                   placeholder="Enter new password"
                   className="w-full px-3 py-2 border rounded-md outline-none"
                 />
+                <p className="text-xs text-gray-500 mt-1">{PASSWORD_HINT}</p>
+                {passwordError && (
+                  <p className="text-sm text-red-500 mt-1">{passwordError}</p>
+                )}
               </div>
             </>
           )}

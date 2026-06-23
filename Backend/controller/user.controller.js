@@ -2,6 +2,7 @@ import User from "../model/user.model.js";
 import Verify from "../model/verify.model.js";
 import bcryptjs from "bcryptjs";
 import nodemailer from "nodemailer";
+import { validatePassword } from "../utils/passwordValidation.js";
 
 const createTransporter = () =>
     nodemailer.createTransport({
@@ -69,6 +70,12 @@ export const signup = async(req, res) => {
         if (usern) {
             return res.status(400).json({ message: "This Username is not available" });
         }
+
+        const passwordCheck = validatePassword(password);
+        if (!passwordCheck.valid) {
+            return res.status(400).json({ message: passwordCheck.message });
+        }
+
         const hashPassword = await bcryptjs.hash(password, 10);
         const createdUser = new User({
             fullname: fullname,
@@ -224,6 +231,11 @@ export const resetPassword = async (req, res) => {
 
         if (!email || !otp || !newPassword) {
             return res.status(400).json({ message: "Email, OTP, and new password are required" });
+        }
+
+        const passwordCheck = validatePassword(newPassword);
+        if (!passwordCheck.valid) {
+            return res.status(400).json({ message: passwordCheck.message });
         }
 
         const user = await User.findOne({ email });

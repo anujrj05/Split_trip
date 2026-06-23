@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getApiErrorMessage } from "../utils/apiErrorMessage";
+import { PASSWORD_HINT, validatePassword } from "../utils/passwordValidation";
 
 function Signup() {
   const [id, setId] = useState("");
@@ -18,6 +19,7 @@ function Signup() {
   const [style, setStyle] = useState("hidden");
   const [verotp, setVerotp] = useState("Verify Email");
   const [imp, setImp] = useState("0");
+  const [passwordError, setPasswordError] = useState("");
 
   const [formData, setFormData] = useState({
     fullname: "",
@@ -33,6 +35,9 @@ function Signup() {
       ...formData,
       [name]: value,
     });
+    if (name === "password") {
+      setPasswordError("");
+    }
   };
 
   const handleButtonClick = () => {
@@ -89,6 +94,13 @@ function Signup() {
   };
 
   const onSubmit = async () => {
+    const passwordCheck = validatePassword(formData.password);
+    if (!passwordCheck.valid) {
+      setPasswordError(passwordCheck.message);
+      toast.error(passwordCheck.message);
+      return;
+    }
+
     const userInfo = {
       email: formData.email,
       fullname: formData.fullname,
@@ -203,6 +215,11 @@ function Signup() {
                   onChange={handleChange}
                 />
                 <br />
+                <span className="text-xs text-gray-500">{PASSWORD_HINT}</span>
+                <br />
+                {passwordError && (
+                  <span className="text-sm text-red-500">{passwordError}</span>
+                )}
                 {errors.password && (
                   <span className="text-sm text-red-500">
                     This field is required
