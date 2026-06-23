@@ -33,6 +33,11 @@ function BackendStatus() {
     checking: "Backend: Checking...",
   };
 
+  // Keep UI clean: only show banner when action is needed.
+  if (status === "online") {
+    return null;
+  }
+
   return (
     <div className="max-w-screen-2xl container mx-auto md:px-20 px-4 mt-20">
       <div className={`border rounded-md px-3 py-2 text-sm ${statusStyles[status]}`}>
