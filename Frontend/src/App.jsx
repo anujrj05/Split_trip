@@ -9,6 +9,7 @@ import Transaction from "./transaction/transaction";
 import Whopayss from "./whopays/whopays";
 import Profile from "./profile/profile";
 import Signup from "./components/Signup";
+import ForgotPassword from "./components/ForgotPassword";
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/AuthProvider";
 
@@ -51,6 +52,7 @@ function App() {
             element={authUser ? <Profile /> : <Navigate to="/signup" />}
           />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
         <Toaster />
       </div>

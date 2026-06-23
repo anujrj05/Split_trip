@@ -4,6 +4,7 @@ import Login from "./Login";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { getApiErrorMessage } from "../utils/apiErrorMessage";
 
 function Signup() {
   const [id, setId] = useState("");
@@ -82,10 +83,8 @@ function Signup() {
         localStorage.setItem("Users", JSON.stringify(res.data.user));
       })
       .catch((err) => {
-        if (err.response) {
-          console.log(err);
-          toast.error("Error: " + err.response.data.message);
-        }
+        console.log(err);
+        toast.error(getApiErrorMessage(err));
       });
   };
 
@@ -117,10 +116,8 @@ function Signup() {
         }
       })
       .catch((err) => {
-        if (err.response) {
-          console.log(err);
-          toast.error("Error: " + err.response.data.message);
-        }
+        console.log(err);
+        toast.error(getApiErrorMessage(err));
       });
   };
 

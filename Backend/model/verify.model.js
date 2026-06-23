@@ -7,6 +7,11 @@ const verifySchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    purpose: {
+        type: String,
+        enum: ["signup", "reset_password"],
+        default: "signup",
+    },
     otp: {
         type: String,
         required: true,

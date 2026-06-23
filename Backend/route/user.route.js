@@ -1,12 +1,21 @@
 import express from "express";
 /* import User from "../model/user.model.js"; */
-import { signup, login ,profile,verifymail} from "../controller/user.controller.js";
+import {
+  signup,
+  login,
+  profile,
+  verifymail,
+  requestPasswordReset,
+  resetPassword,
+} from "../controller/user.controller.js";
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
 router.get("/profile", profile);
 router.post("/verify",verifymail);
+router.post("/forgot-password/request", requestPasswordReset);
+router.post("/forgot-password/reset", resetPassword);
 
 
 /* router.get('/un', async (req, res) => {

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { getApiErrorMessage } from "../utils/apiErrorMessage";
 function Login() {
   const {
     register,
@@ -29,11 +30,9 @@ function Login() {
         }
       })
       .catch((err) => {
-        if (err.response) {
-          console.log(err);
-          toast.error("Error: " + err.response.data.message);
-          setTimeout(() => {}, 2000);
-        }
+        console.log(err);
+        toast.error(getApiErrorMessage(err));
+        setTimeout(() => {}, 2000);
       });
   };
   return (
@@ -84,6 +83,11 @@ function Login() {
                   This field is required
                 </span>
               )}
+              <div className="text-right">
+                <Link to="/forgot-password" className="text-sm text-blue-500 underline">
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             {/* Button */}
