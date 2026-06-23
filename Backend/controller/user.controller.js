@@ -61,7 +61,6 @@ const generateOtp = () => String(Math.floor(100000 + Math.random() * 900000));
 export const signup = async(req, res) => {
     try {
         const { fullname, email, password, username } = req.body;
-        console.log(fullname);
         const user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({ message: "Email already used" });
@@ -84,18 +83,15 @@ export const signup = async(req, res) => {
             password: hashPassword,
         });
         const userdata=await createdUser.save();
-        console.log("data aa gya");
         const otp = generateOtp();
 if(userdata){
     await sendOtpMail(fullname, email, otp, "signup");
-    //generate a otp and save a document in verify model 
     const createdOtp = new Verify({
         otp: otp,
         user_id: createdUser._id,
         purpose: "signup",
     });
     await createdOtp.save();
-    console.log("verify wala model create ho gya")
 
     res.status(201).json({
             message: "User created successfully",
